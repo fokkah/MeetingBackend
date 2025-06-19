@@ -1,0 +1,52 @@
+package fokka.se.meetingbackend.CONTROLLER;
+
+import fokka.se.meetingbackend.DTO.MeetingDTO;
+import fokka.se.meetingbackend.SERVICE.MeetingService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+
+
+@RestController
+@RequestMapping("/api/calendar")
+@Validated
+public class MeetingController {
+
+
+    private MeetingService meetingService;
+    private StringHttpMessageConverter stringHttpMessageConverter;
+    private MeetingDTO meetingDTO;
+
+    @Autowired
+    public MeetingController(MeetingService meetingService, StringHttpMessageConverter stringHttpMessageConverter) {
+        this.meetingService = meetingService;
+        this.stringHttpMessageConverter = stringHttpMessageConverter;
+    }
+
+    public MeetingController(MeetingDTO meetingDTO) {
+        this.meetingDTO = meetingDTO;
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public List<MeetingDTO> getMeetings() {
+        return meetingService.findAll();
+    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public MeetingDTO createMeeting(@RequestParam @Valid String meetingRequestEmail,
+                                    @RequestParam String meetingTitle,
+                                    @RequestParam String meetingDescription,
+                                    @RequestParam LocalDate meetingDate,
+                                    @RequestParam LocalDate meetingStartTime,
+                                    @RequestParam LocalDate meetingEndTime) {
+
+        return meetingService.createMeeting(meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
+    }
+}

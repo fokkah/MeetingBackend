@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Builder
 public record MeetingDTO(
@@ -26,10 +27,10 @@ public record MeetingDTO(
         LocalDate meetingDate,
 
         @NotNull
-        LocalDate meetingStartTime,
+        LocalTime meetingStartTime,
 
         @NotNull
-        LocalDate meetingEndTime)
+        LocalTime meetingEndTime)
 
         {
 

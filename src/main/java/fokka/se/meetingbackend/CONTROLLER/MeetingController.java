@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -44,8 +45,8 @@ public class MeetingController {
                                     @RequestParam String meetingTitle,
                                     @RequestParam String meetingDescription,
                                     @RequestParam LocalDate meetingDate,
-                                    @RequestParam LocalDate meetingStartTime,
-                                    @RequestParam LocalDate meetingEndTime) {
+                                    @RequestParam LocalTime meetingStartTime,
+                                    @RequestParam LocalTime meetingEndTime) {
 
         return meetingService.createMeeting(meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
     }

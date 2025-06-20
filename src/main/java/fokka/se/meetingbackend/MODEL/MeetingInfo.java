@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Builder
@@ -37,10 +38,10 @@ public class MeetingInfo {
     private LocalDate meetingDate;
 
     @Column
-    private LocalDate meetingStartTime;
+    private LocalTime meetingStartTime;
 
     @Column
-    private LocalDate meetingEndTime;
+    private LocalTime meetingEndTime;
 
 
 

@@ -1,9 +1,9 @@
 package fokka.se.meetingbackend.SERVICE;
 
 import fokka.se.meetingbackend.DTO.MeetingDTO;
-import org.hibernate.query.spi.Limit;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface MeetingService {
@@ -12,7 +12,7 @@ public interface MeetingService {
 
     MeetingDTO findByMeetingRequestEmail(String meetingRequestEmail);
 
-    MeetingDTO findByMeetingDate(LocalDate meetingDate, Limit limit);
+    MeetingDTO findByMeetingDate(LocalDate meetingDate);
 
     MeetingDTO findByMeetingTitle(String meetingTitle);
 
@@ -20,7 +20,7 @@ public interface MeetingService {
     MeetingDTO createMeeting(String meetingTitle,
                              String meetingDescription,
                              LocalDate meetingDate,
-                             LocalDate meetingStartTime,
-                             LocalDate meetingEndTime,
+                             LocalTime meetingStartTime,
+                             LocalTime meetingEndTime,
                              String meetingRequestEmail);
 }

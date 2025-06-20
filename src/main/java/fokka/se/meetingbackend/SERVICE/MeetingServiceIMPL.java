@@ -3,11 +3,11 @@ package fokka.se.meetingbackend.SERVICE;
 import fokka.se.meetingbackend.DTO.MeetingDTO;
 import fokka.se.meetingbackend.MODEL.MeetingInfo;
 import fokka.se.meetingbackend.REPO.MeetingRepo;
-import org.hibernate.query.spi.Limit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class MeetingServiceIMPL implements MeetingService{
 
     private final MeetingRepo meetingRepo;
+
 
     @Autowired
     public MeetingServiceIMPL(MeetingRepo meetingRepo) {
@@ -45,7 +46,7 @@ public class MeetingServiceIMPL implements MeetingService{
     }
 
     @Override
-    public MeetingDTO findByMeetingDate(LocalDate meetingDate, Limit limit) {
+    public MeetingDTO findByMeetingDate(LocalDate meetingDate) {
 
         return null;
     }
@@ -59,9 +60,38 @@ public class MeetingServiceIMPL implements MeetingService{
     public MeetingDTO createMeeting(String meetingTitle,
                                     String meetingDescription,
                                     LocalDate meetingDate,
-                                    LocalDate meetingStartTime,
-                                    LocalDate meetingEndTime,
+                                    LocalTime meetingStartTime,
+                                    LocalTime meetingEndTime,
                                     String meetingRequestEmail) {
-        return null;
+            try {
+            if (meetingRepo.findByMeetingDate(meetingDate, null).isEmpty()){
+
+                meetingRepo.save(MeetingInfo.builder()
+                        .meetingTitle(meetingTitle)
+                        .meetingDescription(meetingDescription)
+                        .meetingDate(meetingDate)
+                        .meetingStartTime(meetingStartTime)
+                        .meetingEndTime(meetingEndTime)
+                        .meetingRequestEmail(meetingRequestEmail)
+                        .build());
+            return MeetingDTO.builder()
+                .meetingTitle(meetingTitle)
+                .meetingDescription(meetingDescription)
+                .meetingDate(meetingDate)
+                .meetingStartTime(meetingStartTime)
+                .meetingEndTime(meetingEndTime)
+                .meetingRequestEmail(meetingRequestEmail)
+                .build();
+            } else if (meetingRepo.findByMeetingDate(meetingDate, null).isPresent()) {
+                return MeetingDTO.builder()
+                        .meetingDate(meetingRepo.findByMeetingDate(meetingDate, null).get().getMeetingDate())
+                        .meetingRequestEmail(String.valueOf(meetingRepo.findByMeetingRequestEmail(meetingRequestEmail).orElseThrow()))
+                        .build();
+
+                }
+                throw new RuntimeException("Meeting creaton failed");
+            }catch (RuntimeException e) {
+                throw new RuntimeException("Meeting already exists");
+        }
     }
 }

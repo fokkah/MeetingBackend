@@ -39,10 +39,16 @@ public class MeetingServiceIMPL implements MeetingService{
 
     @Override
     public MeetingDTO findByMeetingRequestEmail(String meetingRequestEmail) {
-        MeetingInfo meetingInfo = meetingRepo.findByMeetingRequestEmail(meetingRequestEmail).orElseThrow(() ->(new RuntimeException("Email not in system")));
-        return MeetingDTO.builder()
-                .meetingRequestEmail(meetingInfo.getMeetingRequestEmail())
-                .build();
+        List<MeetingInfo> meetings = meetingRepo.findByMeetingRequestEmail(meetingRequestEmail);
+        if (meetings.isEmpty()) {
+            throw new RuntimeException("Email not in system. " + meetingRequestEmail);
+        }
+        return meetingRepo.findAll().stream().filter(M -> M.getMeetingRequestEmail().equals(meetingRequestEmail)).map(A -> MeetingDTO.builder()
+                .meetingId(A.getMeetingId())
+                .meetingRequestEmail(A.getMeetingRequestEmail())
+                .meetingDate(A.getMeetingDate())
+                .meetingTitle(A.getMeetingTitle())
+                .build()).collect(Collectors.toList()).get(0);
     }
 
     @Override
@@ -85,7 +91,7 @@ public class MeetingServiceIMPL implements MeetingService{
             } else if (meetingRepo.findByMeetingDate(meetingDate, null).isPresent()) {
                 return MeetingDTO.builder()
                         .meetingDate(meetingRepo.findByMeetingDate(meetingDate, null).get().getMeetingDate())
-                        .meetingRequestEmail(String.valueOf(meetingRepo.findByMeetingRequestEmail(meetingRequestEmail).orElseThrow()))
+                        .meetingRequestEmail(String.valueOf(meetingRepo.findByMeetingRequestEmail(meetingRequestEmail)))
                         .build();
 
                 }

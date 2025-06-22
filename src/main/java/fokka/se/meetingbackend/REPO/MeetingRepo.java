@@ -14,7 +14,7 @@ public interface MeetingRepo extends JpaRepository<MeetingInfo, Long> {
     
     
     Optional<MeetingInfo> findByMeetingId(Long meetingId);
-    Optional<MeetingInfo> findByMeetingRequestEmail(String meetingRequestEmail);
+    List<MeetingInfo> findByMeetingRequestEmail(String meetingRequestEmail);
 
     Optional<MeetingInfo> findByMeetingDate(LocalDate meetingDate, Limit limit);
     List<MeetingInfo> findAll();

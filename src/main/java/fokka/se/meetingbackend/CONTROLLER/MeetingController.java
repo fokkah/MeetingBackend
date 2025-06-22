@@ -43,10 +43,10 @@ public class MeetingController {
     @ResponseStatus(HttpStatus.CREATED)
     public MeetingDTO createMeeting(@RequestParam @Valid String meetingRequestEmail,
                                     @RequestParam String meetingTitle,
-                                    @RequestParam String meetingDescription,
+                                    @RequestParam(required = false) String meetingDescription,
                                     @RequestParam LocalDate meetingDate,
-                                    @RequestParam LocalTime meetingStartTime,
-                                    @RequestParam LocalTime meetingEndTime) {
+                                    @RequestParam(required = false) LocalTime meetingStartTime,
+                                    @RequestParam(required = false) LocalTime meetingEndTime) {
 
         return meetingService.createMeeting(meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
     }

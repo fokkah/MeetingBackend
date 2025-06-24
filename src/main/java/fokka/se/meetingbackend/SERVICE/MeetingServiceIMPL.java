@@ -29,7 +29,7 @@ public class MeetingServiceIMPL implements MeetingService{
                                     LocalDate meetingDate,
                                     LocalTime meetingStartTime,
                                     LocalTime meetingEndTime,
-                                    String meetingRequestEmail) {
+                                    String meetingRequestEmail){
         try {
             if (meetingRepo.findByMeetingDate(meetingDate, null).isEmpty()){
 
@@ -91,10 +91,43 @@ public class MeetingServiceIMPL implements MeetingService{
                 .build()).collect(Collectors.toList()).get(0);
     }
 
+    @Override
+    public MeetingDTO findByMeetingId(Long meetingId) {
+        return null;
+    }
+
 
     @Override
-    public MeetingDTO updateMeeting(String meetingTitle, String meetingDescription, LocalDate meetingDate, LocalTime meetingStartTime, LocalTime meetingEndTime, String meetingRequestEmail) {
-        return null;
+    public MeetingDTO updateMeetingById(
+            Long meetingId,
+            String meetingTitle,
+            String meetingDescription,
+            LocalDate meetingDate,
+            LocalTime meetingStartTime,
+            LocalTime meetingEndTime,
+            String meetingRequestEmail) {
+
+        MeetingInfo existingMeeting = meetingRepo.findByMeetingId(meetingId).orElseThrow(() -> new RuntimeException("Meeting not found" + meetingId));
+
+        existingMeeting.setMeetingTitle(meetingTitle);
+        existingMeeting.setMeetingDescription(meetingDescription);
+        existingMeeting.setMeetingDate(meetingDate);
+        existingMeeting.setMeetingStartTime(meetingStartTime);
+        existingMeeting.setMeetingEndTime(meetingEndTime);
+        existingMeeting.setMeetingRequestEmail(meetingRequestEmail);
+
+        meetingRepo.save(existingMeeting);
+
+
+        return MeetingDTO.builder()
+                .meetingId(existingMeeting.getMeetingId())
+                .meetingTitle(existingMeeting.getMeetingTitle())
+                .meetingDescription(existingMeeting.getMeetingDescription())
+                .meetingDate(existingMeeting.getMeetingDate())
+                .meetingStartTime(existingMeeting.getMeetingStartTime())
+                .meetingEndTime(existingMeeting.getMeetingEndTime())
+                .meetingRequestEmail(existingMeeting.getMeetingRequestEmail())
+                .build();
     }
 
     @Override

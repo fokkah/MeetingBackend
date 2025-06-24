@@ -46,20 +46,23 @@ public class MeetingController {
                                     @RequestParam(required = false) String meetingDescription,
                                     @RequestParam LocalDate meetingDate,
                                     @RequestParam(required = false) LocalTime meetingStartTime,
-                                    @RequestParam(required = false) LocalTime meetingEndTime) {
+                                    @RequestParam(required = false) LocalTime meetingEndTime){
 
         return meetingService.createMeeting(meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
     }
 
-    @GetMapping
-    @ResponseStatus()
-    public MeetingDTO updateMeeting(
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MeetingDTO updateMeetingById(
+            @PathVariable("id") Long meetingId,
             @RequestParam String meetingTitle,
             @RequestParam(required = false) String meetingDescription,
             @RequestParam LocalDate meetingDate,
             @RequestParam(required = false) LocalTime meetingStartTime,
             @RequestParam(required = false) LocalTime meetingEndTime,
             @RequestParam @Valid String meetingRequestEmail){
-        return meetingService.updateMeeting(meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
+        return meetingService.updateMeetingById(meetingId, meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
     }
+
+
 }

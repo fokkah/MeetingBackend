@@ -11,8 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface MeetingRepo extends JpaRepository<MeetingInfo, Long> {
-    
-    
+
     Optional<MeetingInfo> findByMeetingId(Long meetingId);
     List<MeetingInfo> findByMeetingRequestEmail(String meetingRequestEmail);
 

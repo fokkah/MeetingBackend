@@ -12,6 +12,8 @@ public interface MeetingService {
 
     MeetingDTO findByMeetingRequestEmail(String meetingRequestEmail);
 
+    MeetingDTO findByMeetingId(Long meetingId);
+
 
 
     MeetingDTO createMeeting(String meetingTitle,
@@ -21,7 +23,8 @@ public interface MeetingService {
                              LocalTime meetingEndTime,
                              String meetingRequestEmail);
 
-    MeetingDTO updateMeeting(String meetingTitle,
+    MeetingDTO updateMeetingById(Long meetingId,
+                            String meetingTitle,
                              String meetingDescription,
                              LocalDate meetingDate,
                              LocalTime meetingStartTime,

@@ -14,12 +14,52 @@ import java.util.stream.Collectors;
 @Service
 public class MeetingServiceIMPL implements MeetingService{
 
+
     private final MeetingRepo meetingRepo;
 
 
     @Autowired
     public MeetingServiceIMPL(MeetingRepo meetingRepo) {
         this.meetingRepo = meetingRepo;
+    }
+
+    @Override
+    public MeetingDTO createMeeting(String meetingTitle,
+                                    String meetingDescription,
+                                    LocalDate meetingDate,
+                                    LocalTime meetingStartTime,
+                                    LocalTime meetingEndTime,
+                                    String meetingRequestEmail) {
+        try {
+            if (meetingRepo.findByMeetingDate(meetingDate, null).isEmpty()){
+
+                meetingRepo.save(MeetingInfo.builder()
+                        .meetingTitle(meetingTitle)
+                        .meetingDescription(meetingDescription)
+                        .meetingDate(meetingDate)
+                        .meetingStartTime(meetingStartTime)
+                        .meetingEndTime(meetingEndTime)
+                        .meetingRequestEmail(meetingRequestEmail)
+                        .build());
+                return MeetingDTO.builder()
+                        .meetingTitle(meetingTitle)
+                        .meetingDescription(meetingDescription)
+                        .meetingDate(meetingDate)
+                        .meetingStartTime(meetingStartTime)
+                        .meetingEndTime(meetingEndTime)
+                        .meetingRequestEmail(meetingRequestEmail)
+                        .build();
+            } else if (meetingRepo.findByMeetingDate(meetingDate, null).isPresent()) {
+                return MeetingDTO.builder()
+                        .meetingDate(meetingRepo.findByMeetingDate(meetingDate, null).get().getMeetingDate())
+                        .meetingRequestEmail(String.valueOf(meetingRepo.findByMeetingRequestEmail(meetingRequestEmail)))
+                        .build();
+
+            }
+            throw new RuntimeException("Meeting creaton failed");
+        }catch (RuntimeException e) {
+            throw new RuntimeException("Meeting already exists");
+        }
     }
 
 
@@ -51,53 +91,20 @@ public class MeetingServiceIMPL implements MeetingService{
                 .build()).collect(Collectors.toList()).get(0);
     }
 
-    @Override
-    public MeetingDTO findByMeetingDate(LocalDate meetingDate) {
 
+    @Override
+    public MeetingDTO updateMeeting(String meetingTitle, String meetingDescription, LocalDate meetingDate, LocalTime meetingStartTime, LocalTime meetingEndTime, String meetingRequestEmail) {
         return null;
     }
 
     @Override
-    public MeetingDTO findByMeetingTitle(String meetingTitle) {
+    public MeetingDTO deleteMeeting(String meetingId) {
         return null;
     }
 
-    @Override
-    public MeetingDTO createMeeting(String meetingTitle,
-                                    String meetingDescription,
-                                    LocalDate meetingDate,
-                                    LocalTime meetingStartTime,
-                                    LocalTime meetingEndTime,
-                                    String meetingRequestEmail) {
-            try {
-            if (meetingRepo.findByMeetingDate(meetingDate, null).isEmpty()){
 
-                meetingRepo.save(MeetingInfo.builder()
-                        .meetingTitle(meetingTitle)
-                        .meetingDescription(meetingDescription)
-                        .meetingDate(meetingDate)
-                        .meetingStartTime(meetingStartTime)
-                        .meetingEndTime(meetingEndTime)
-                        .meetingRequestEmail(meetingRequestEmail)
-                        .build());
-            return MeetingDTO.builder()
-                .meetingTitle(meetingTitle)
-                .meetingDescription(meetingDescription)
-                .meetingDate(meetingDate)
-                .meetingStartTime(meetingStartTime)
-                .meetingEndTime(meetingEndTime)
-                .meetingRequestEmail(meetingRequestEmail)
-                .build();
-            } else if (meetingRepo.findByMeetingDate(meetingDate, null).isPresent()) {
-                return MeetingDTO.builder()
-                        .meetingDate(meetingRepo.findByMeetingDate(meetingDate, null).get().getMeetingDate())
-                        .meetingRequestEmail(String.valueOf(meetingRepo.findByMeetingRequestEmail(meetingRequestEmail)))
-                        .build();
 
-                }
-                throw new RuntimeException("Meeting creaton failed");
-            }catch (RuntimeException e) {
-                throw new RuntimeException("Meeting already exists");
-        }
-    }
+
+
+
 }

@@ -50,4 +50,16 @@ public class MeetingController {
 
         return meetingService.createMeeting(meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
     }
+
+    @GetMapping
+    @ResponseStatus()
+    public MeetingDTO updateMeeting(
+            @RequestParam String meetingTitle,
+            @RequestParam(required = false) String meetingDescription,
+            @RequestParam LocalDate meetingDate,
+            @RequestParam(required = false) LocalTime meetingStartTime,
+            @RequestParam(required = false) LocalTime meetingEndTime,
+            @RequestParam @Valid String meetingRequestEmail){
+        return meetingService.updateMeeting(meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
+    }
 }

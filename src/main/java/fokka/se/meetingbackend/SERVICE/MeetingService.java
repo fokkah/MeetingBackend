@@ -12,9 +12,6 @@ public interface MeetingService {
 
     MeetingDTO findByMeetingRequestEmail(String meetingRequestEmail);
 
-    MeetingDTO findByMeetingDate(LocalDate meetingDate);
-
-    MeetingDTO findByMeetingTitle(String meetingTitle);
 
 
     MeetingDTO createMeeting(String meetingTitle,
@@ -23,4 +20,14 @@ public interface MeetingService {
                              LocalTime meetingStartTime,
                              LocalTime meetingEndTime,
                              String meetingRequestEmail);
+
+    MeetingDTO updateMeeting(String meetingTitle,
+                             String meetingDescription,
+                             LocalDate meetingDate,
+                             LocalTime meetingStartTime,
+                             LocalTime meetingEndTime,
+                             String meetingRequestEmail);
+
+    MeetingDTO deleteMeeting(String meetingId);
+
 }

@@ -31,6 +31,6 @@ public interface MeetingService {
                              LocalTime meetingEndTime,
                              String meetingRequestEmail);
 
-    MeetingDTO deleteMeeting(String meetingId);
+    MeetingDTO deleteMeeting(Long meetingId);
 
 }

@@ -107,7 +107,7 @@ public class MeetingServiceIMPL implements MeetingService{
             LocalTime meetingEndTime,
             String meetingRequestEmail) {
 
-        MeetingInfo existingMeeting = meetingRepo.findByMeetingId(meetingId).orElseThrow(() -> new RuntimeException("Meeting not found" + meetingId));
+        MeetingInfo existingMeeting = meetingRepo.findByMeetingId(meetingId).orElseThrow(() -> new RuntimeException("Meeting not found " + "Id " + meetingId));
 
         existingMeeting.setMeetingTitle(meetingTitle);
         existingMeeting.setMeetingDescription(meetingDescription);
@@ -131,8 +131,15 @@ public class MeetingServiceIMPL implements MeetingService{
     }
 
     @Override
-    public MeetingDTO deleteMeeting(String meetingId) {
-        return null;
+    public MeetingDTO deleteMeeting(Long meetingId) {
+        MeetingInfo deleteMeeting = meetingRepo.findByMeetingId(meetingId).orElseThrow(() -> new RuntimeException("Meeting not found" + meetingId));
+        meetingRepo.delete(deleteMeeting);
+        return MeetingDTO.builder()
+                .meetingId(deleteMeeting.getMeetingId())
+                .meetingTitle(deleteMeeting.getMeetingTitle())
+                .meetingDescription(deleteMeeting.getMeetingDescription())
+                .meetingRequestEmail(deleteMeeting.getMeetingRequestEmail())
+                .build();
     }
 
 

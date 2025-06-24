@@ -35,7 +35,7 @@ public class MeetingController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.OK)
     public List<MeetingDTO> getMeetings() {
         return meetingService.findAll();
     }
@@ -62,6 +62,13 @@ public class MeetingController {
             @RequestParam(required = false) LocalTime meetingEndTime,
             @RequestParam @Valid String meetingRequestEmail){
         return meetingService.updateMeetingById(meetingId, meetingTitle, meetingDescription, meetingDate, meetingStartTime, meetingEndTime, meetingRequestEmail);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MeetingDTO detailMeetingById(@PathVariable("id") Long meetingId){
+
+        return meetingService.deleteMeeting(meetingId );
     }
 
 

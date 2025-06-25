@@ -43,6 +43,8 @@ public class MeetingInfo {
     @Column
     private LocalTime meetingEndTime;
 
+    private boolean accepted = false;
+
 
 
 

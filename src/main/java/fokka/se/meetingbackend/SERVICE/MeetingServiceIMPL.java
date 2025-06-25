@@ -64,6 +64,16 @@ public class MeetingServiceIMPL implements MeetingService{
 
 
     @Override
+    public MeetingRepo meetingRepo() {
+        return null;
+    }
+
+    @Override
+    public MeetingInfo meetingInfo() {
+        return null;
+    }
+
+    @Override
     public List<MeetingDTO> findAll() {
         List<MeetingInfo> meetingInfoList = meetingRepo.findAll();
         return meetingInfoList.stream().map(A -> MeetingDTO.builder()
@@ -130,17 +140,26 @@ public class MeetingServiceIMPL implements MeetingService{
                 .build();
     }
 
+
+
+    @Override
+    public MeetingDTO acceptMeeting(Long meetingId){
+
+        MeetingInfo meetingInfo = meetingRepo().findById(meetingId).orElseThrow(()-> new RuntimeException("Meeting not found " + "Id " + meetingId));
+        meetingInfo.setAccepted(true);
+        meetingRepo.save(meetingInfo);
+        return null;
+    }
+
     @Override
     public MeetingDTO deleteMeeting(Long meetingId) {
-        MeetingInfo deleteMeeting = meetingRepo.findByMeetingId(meetingId).orElseThrow(() -> new RuntimeException("Meeting not found" + meetingId));
-        meetingRepo.delete(deleteMeeting);
-        return MeetingDTO.builder()
-                .meetingId(deleteMeeting.getMeetingId())
-                .meetingTitle(deleteMeeting.getMeetingTitle())
-                .meetingDescription(deleteMeeting.getMeetingDescription())
-                .meetingRequestEmail(deleteMeeting.getMeetingRequestEmail())
-                .build();
+        MeetingInfo meeting = meetingRepo.findById(meetingId)
+                .orElseThrow(() -> new RuntimeException("Meeting not found"));
+        meetingRepo.deleteById(meetingId);
+        return null;
     }
+
+
 
 
 
